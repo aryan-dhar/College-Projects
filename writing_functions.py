@@ -1,12 +1,3 @@
-# By submitting this assignment, I agree to the following:
-# “Aggies do not lie, cheat, or steal, or tolerate those who do”
-# “I have not given or received any unauthorized aid on this assignment”
-#
-# Name: Aryan Dharangaonkar
-# Section: ENGR 102 - 561
-# Assignment: 3.18 LAB: Writing functions
-# Date: 09/05/2023
-
 import math
 
 # Define a function to calculate the area of an equilateral triangle
