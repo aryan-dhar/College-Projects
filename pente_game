@@ -1,0 +1,568 @@
+import numpy as np
+import time
+import random
+from turtle import *
+import turtle
+from math import *
+
+
+
+Grid = np.full((20,20), ["0"], dtype = str)
+
+def displayGrid():
+    print()
+    print("\t\t\t\t The Board")
+    print()
+    for i in range(19):
+        print("\t", end = " ")
+        for j in range(19):
+            print(f'{Grid[i][j]}', end = " ")
+        print("\n")
+        
+print("This is Pente\n")
+print("Instructions:\n1. Players will alternate placing stones of their color on empty intersections")
+print("2. White Starts")
+print("3. Goal of the game is to either align five or more stones of the same color in a row in any vertical, horizontal, or diagonal direction or to make five captures")
+print("4. Stones are captured by flanking an adjacent pair of an opponent's stones directly on either side with your own stones")
+print("5. A stone can be legally placed on any empty intersection, even if it forms a pair between two enemy stones")
+print("6. A player WINS if they capture ten or more stones, so capture ten or more stones :)")
+time.sleep(3)
+print()
+print("3...")
+time.sleep(1.5)
+print("2...")
+time.sleep(1.5)
+print("1...")
+time.sleep(2)
+print()
+print()
+print("Empty spots are represented by zeros")
+cntW = 0
+cntB = 0
+
+
+
+def checkUp(player, r, c):
+    '''Checks to see if the player captured
+    two enemy pieces above it
+    '''
+    try:
+        if(player == "W"):
+            if(Grid[r - 1, c] == "B" and Grid[r - 2, c] == "B" and Grid[r - 3, c] == "W"):
+                global cntW
+                cntW += 2
+                Grid[r - 1, c] = "0"
+                Grid[r - 2, c] = "0"
+        else:
+            if(Grid[r - 1, c] == "W" and Grid[r - 2, c] == "W" and Grid[r - 3, c] == "B"):
+                global cntB
+                cntB += 2
+                Grid[r - 1, c] = "0"
+                Grid[r - 2, c] = "0"
+    except:
+        pass
+
+def checkDown(player, r, c):
+    try:
+        if(player == "W"):
+            if(Grid[r + 1, c] == "B" and Grid[r + 2, c] == "B" and Grid[r + 3, c] == "W"):
+                global cntW
+                cntW += 2
+                Grid[r + 1, c] = "0"
+                Grid[r + 2, c] = "0"
+        else:
+            if(Grid[r + 1, c] == "W" and Grid[r + 2, c] == "W" and Grid[r + 3, c] == "B"):
+                global cntB
+                cntB += 2
+                Grid[r + 1, c] = "0"
+                Grid[r + 2, c] = "0"
+    except:
+        pass
+
+def checkRightUp(player, r, c):
+    '''Checks to see if the player captured two enemy pieces up
+    and to the right (diagonally)
+    '''
+    try:
+        if(player == "W"):
+            if(Grid[r - 1, c + 1] == "B" and Grid[r - 2, c + 2] == "B" and Grid[r - 3, c + 3] == "W"):
+                global cntW
+                cntW += 2
+                Grid[r - 1, c + 1] = "0"
+                Grid[r - 2, c + 2] = "0"
+        else:
+            if(Grid[r - 1, c + 1] == "W" and Grid[r - 2, c + 2] == "W" and Grid[r - 3, c + 3] == "B"):
+                global cntB
+                cntB += 2
+                Grid[r - 1, c + 1] = "0"
+                Grid[r - 2, c + 2] = "0"
+    except:
+        pass
+def checkLeftUp(player, r, c):
+    try:
+        if(player == "W"):
+            if(Grid[r - 1, c - 1] == "B" and Grid[r - 2, c - 2] == "B" and Grid[r - 3, c - 3] == "W"):
+                global cntW
+                cntW += 2
+                Grid[r - 1, c - 1] = "0"
+                Grid[r - 2, c - 2] = "0"
+        else:
+            if(Grid[r - 1, c - 1] == "W" and Grid[r - 2, c - 2] == "W" and Grid[r - 3, c - 3] == "B"):
+                global cntB
+                cntB += 2
+                Grid[r - 1, c - 1] = "0"
+                Grid[r - 2, c - 2] = "0"
+    except:
+        pass
+def checkRightDown(player, r, c):
+    '''checks to see if the player captured pieces below and
+    to the right of it (diagonally)
+    '''
+    try:
+        if(player == "W"):
+            if(Grid[r + 1, c + 1] == "B" and Grid[r + 2, c + 2] == "B" and Grid[r + 3, c + 3] == "W"):
+                global cntW
+                cntW += 2
+                Grid[r + 1, c + 1] = "0"
+                Grid[r + 2, c + 2] = "0"
+        else:
+            if(Grid[r + 1, c + 1] == "W" and Grid[r + 2, c + 2] == "W" and Grid[r + 3, c + 3] == "B"):
+                global cntB
+                cntB += 2
+                Grid[r + 1, c + 1] = "0"
+                Grid[r + 2, c + 2] = "0"
+    except:
+        pass
+def checkLeftDown(player, r, c):
+    try:
+        if(player == "W"):
+            if(Grid[r + 1, c - 1] == "B" and Grid[r + 2, c - 2] == "B" and Grid[r + 3, c - 3] == "W"):
+                global cntW
+                cntW += 2
+                Grid[r + 1, c - 1] = "0"
+                Grid[r + 2, c - 2] = "0"
+        else:
+            if(Grid[r + 1, c - 1] == "W" and Grid[r + 2, c - 2] == "W" and Grid[r + 3, c - 3] == "B"):
+                global cntB
+                cntB += 2
+                Grid[r + 1, c - 1] = "0"
+                Grid[r + 2, c - 2] = "0"
+    except:
+        pass
+def checkRight(player, r, c):
+    try:
+        if(player == "W"):
+            if(Grid[r, c + 1] == "B" and Grid[r, c + 2] == "B" and Grid[r, c + 3] == "W"):
+                global cntW
+                cntW += 2
+                Grid[r, c + 1] = "0"
+                Grid[r, c + 2] = "0"
+        else:
+            if(Grid[r, c + 1] == "W" and Grid[r, c + 2] == "W" and Grid[r, c + 3] == "B"):
+                global cntB
+                cntB += 2
+                Grid[r, c + 1] = "0"
+                Grid[r, c + 2] = "0"
+    except:
+        pass
+def checkLeft(player, r, c):
+    try:
+        if(player == "W"):
+            if(Grid[r, c - 1] == "B" and Grid[r, c - 2] == "B" and Grid[r, c - 3] == "W"):
+                global cntW
+                cntW += 2
+                Grid[r, c - 1] = "0"
+                Grid[r, c - 2] = "0"
+        else:
+            if(Grid[r, c - 1] == "W" and Grid[r, c - 2] == "W" and Grid[r, c - 3] == "B"):
+                global cntB
+                cntB += 2
+                Grid[r, c - 1] = "0"
+                Grid[r, c - 2] = "0"
+    except:
+        pass
+    
+    
+def displayInstructions():
+    print()
+    print("Instructions:\n1. Players will alternate placing stones of their color on empty intersections")
+    print("2. White Starts")
+    print("3. Goal of the game is to either align five or more stones of the same color in a row in any vertical, horizontal, or diagonal direction or to make five captures")
+    print("4. Stones are captured by flanking an adjacent pair of an opponent's stones directly on either side with your own stones")
+    print("5. A stone can be legally placed on any empty intersection, even if it forms a pair between two enemy stones")
+    print("6. A player WINS if they capture ten or more stones, so capture ten or more stones :)")
+    print()
+    
+    
+def displayScore():
+    print()
+    print(f'White score: {cntW}')
+    print(f'Black score: {cntB}')
+    if(cntW > cntB):
+        print("Come on, don't let White win!")
+    if(cntW < cntB):
+        print("Come on, don't let Black win!")
+    print()
+    
+def choosePlayer():
+    num = random.randint(1,2)
+    print()
+    if(num == 2):
+        print("Youngest player will go first")
+    else:
+        print("Oldest player will go first")
+    print("\n\n\n")
+    
+row = 0
+col = 0
+playerFactor = 0
+Quit = False
+
+print("I will randomly decide whether the youngest or oldest person will play first - as White pieces")
+time.sleep(2)
+print("Give me a second")
+time.sleep(2)
+choosePlayer()
+time.sleep(1)
+
+while(cntW < 10 and cntB < 10 and not Quit):
+    time.sleep(2)
+    displayGrid()
+    if(playerFactor % 2 == 0):
+        row = input("White player choose a row (0-18), or type I for instructions, Q to quit the game, S for score: ")
+        while(row == "I" or row == "S" or row == "Q" and not Quit):
+            if(row == "I"):
+                displayInstructions()
+                row = input("White player choose a row (0-18), or type I for instructions, Q to quit the game, S for score: ")
+            elif(row == "Q"):
+                Quit = True
+            else:
+                displayScore()
+                row = input("White player choose a row (0-18), or type I for instructions, Q to quit the game, S for score: ")
+            
+        col = input("White player choose a column (0-18): ")
+        
+            
+    else:
+        row = input("Black player choose a row (0-18), or type I for instructions, Q to quit the game, S for score: ")
+        while(row == "I" or row == "S" or row == "Q" and not Quit):
+            if(row == "I"):
+                displayInstructions()
+                row = input("Black player choose a row (0-18), or type I for instructions, Q to quit the game, S for score: ")
+            elif(row == "Q"):
+                Quit = True
+            else:
+                displayScore()
+                row = input("Black player choose a row (0-18), or type I for instructions, Q to quit the game, S for score: ")
+            
+        col = input("Black player choose a column (0-18): ")
+        
+    done = False
+    while(not done and not Quit):
+        try:
+            if(int(row) >= 0 and int(row) <= 18 and int(col) >= 0 and int(col) <= 18):
+                row = int(row)
+                col = int(col)
+                if(Grid[row, col] != "0"):
+                    print("This position is already taken, choose another one")
+                    done = True
+                    playerFactor -= 1
+                else: 
+                    if(playerFactor % 2 == 0):
+                        Grid[row, col] = "W"
+                        previouscntW = cntW
+                        checkDown("W", row, col)
+                        checkUp("W", row, col)
+                        checkRight("W", row, col)
+                        checkLeft("W", row, col)    
+                        checkRightUp("W", row, col)
+                        checkRightDown("W", row, col)
+                        checkLeftDown("W", row, col)
+                        checkLeftUp("W", row, col)
+                        if(cntW != previouscntW):
+                            print("\nGood job, White captured two black pieces!")
+                        done = True
+                        
+                    else:
+                        Grid[row, col] = "B"
+                        previouscntB = cntB
+                        checkDown("B", row, col)
+                        checkUp("B", row, col)
+                        checkRight("B", row, col)
+                        checkLeft("B", row, col)    
+                        checkRightUp("B", row, col)
+                        checkRightDown("B", row, col)
+                        checkLeftDown("B", row, col)
+                        checkLeftUp("B", row, col)
+                        if(cntB != previouscntB):
+                            print("\nGood job, Black captured two white pieces!")
+                        done = True
+            else:
+                print("INVALID row and/or column, try again")
+                done = True
+                playerFactor -= 1
+        except ValueError:
+            print("INVALID row and/or column, try again")
+            done = True
+            playerFactor -= 1
+    playerFactor += 1    
+
+if(cntW > cntB):
+    print("Congrats! White wins!")
+    t = turtle.Turtle()
+    s = turtle.Screen()
+    s.bgcolor("black")
+    s.screensize(1500, 1000)
+    t.color('white')
+    t.speed(10)
+    t.pensize(5)
+    t.penup()
+    t.setpos(-400,100)
+    t.pendown()
+    t.forward(100)
+    t.left(180)
+    t.forward(100)
+    t.left(90)
+    t.forward(100)
+    t.left(90)
+    t.forward(100)
+    t.penup()
+    t.forward(50)
+    t.pendown()
+    t.forward(100)
+    t.left(90)
+    t.forward(100)
+    t.left(90)
+    t.forward(100)
+    t.left(90)
+    t.forward(100)
+    t.left(90)
+    t.penup()
+    t.forward(150)
+    t.pendown()
+    t.left(90)
+    t.forward(100)
+    t.right(135)
+    t.forward(100 *sqrt(2))
+    t.left(135)
+    t.forward(100)
+    t.right(90)
+    t.penup()
+    t.forward(50)
+    t.pendown()
+    t.right(90)
+    t.forward(100)
+    t.left(90)
+    t.forward(100)
+    t.left(90)
+    t.forward(50)
+    t.left(90)
+    t.forward(50)
+    t.penup()
+    t.forward(50)
+    t.left(90)
+    t.forward(50)
+    t.pendown()
+    t.left(180)
+    t.forward(100)
+    t.right(90)
+    t.forward(100)
+    t.right(90)
+    t.forward(25)
+    t.penup()
+    t.left(90)
+    t.forward(50)
+    t.left(90)
+    t.pendown()
+    t.forward(25)
+    t.right(90)
+    t.forward(100)
+    t.right(90)
+    t.forward(50)
+    t.right(90)
+    t.forward(100)
+    t.right(90)
+    t.forward(25)
+    t.right(180)
+    t.forward(75)
+    t.left(180)
+    t.forward(50)
+    t.right(135)
+    t.forward(50 * sqrt(2))
+    t.left(45)
+    t.penup()
+    t.forward(100)
+    t.pendown()
+    t.left(90)
+    t.forward(100)
+    t.right(90)
+    t.forward(100)
+    t.right(90)
+    t.forward(50)
+    t.right(90)
+    t.forward(100)
+    t.right(180)
+    t.forward(100)
+    t.right(90)
+    t.forward(50)
+    t.left(90)
+    t.penup()
+    t.forward(50)
+    t.left(90)
+    t.forward(100)
+    t.pendown()
+    t.right(90)
+    t.forward(100)
+    t.right(180)
+    t.forward(50)
+    t.left(90)
+    t.forward(100)
+    t.penup()
+    t.left(90)
+    t.forward(100)
+    t.pendown()
+    t.forward(100)
+    t.left(90)
+    t.forward(50)
+    t.left(90)
+    t.forward(100)
+    t.right(90)
+    t.forward(50)
+    t.right(90)
+    t.forward(100)
+    s.exitonclick()
+    turtle.done()
+if(cntW < cntB):
+    print("Congrats, black wins!")
+    t = turtle.Turtle()
+    s = turtle.Screen()
+    s.bgcolor("black")
+    s.screensize(1500, 1000)
+    t.color('white')
+    t.speed(10)
+    t.pensize(5)
+    t.penup()
+    t.setpos(-400,100)
+    t.pendown()
+    t.forward(100)
+    t.left(180)
+    t.forward(100)
+    t.left(90)
+    t.forward(100)
+    t.left(90)
+    t.forward(100)
+    t.penup()
+    t.forward(50)
+    t.pendown()
+    t.forward(100)
+    t.left(90)
+    t.forward(100)
+    t.left(90)
+    t.forward(100)
+    t.left(90)
+    t.forward(100)
+    t.left(90)
+    t.penup()
+    t.forward(150)
+    t.pendown()
+    t.left(90)
+    t.forward(100)
+    t.right(135)
+    t.forward(100 *sqrt(2))
+    t.left(135)
+    t.forward(100)
+    t.right(90)
+    t.penup()
+    t.forward(50)
+    t.pendown()
+    t.right(90)
+    t.forward(100)
+    t.left(90)
+    t.forward(100)
+    t.left(90)
+    t.forward(50)
+    t.left(90)
+    t.forward(50)
+    t.penup()
+    t.forward(50)
+    t.left(90)
+    t.forward(50)
+    t.pendown()
+    t.left(180)
+    t.forward(100)
+    t.right(90)
+    t.forward(100)
+    t.right(90)
+    t.forward(25)
+    t.penup()
+    t.left(90)
+    t.forward(50)
+    t.left(90)
+    t.pendown()
+    t.forward(25)
+    t.right(90)
+    t.forward(100)
+    t.right(90)
+    t.forward(50)
+    t.right(90)
+    t.forward(100)
+    t.right(90)
+    t.forward(25)
+    t.right(180)
+    t.forward(75)
+    t.left(180)
+    t.forward(50)
+    t.right(135)
+    t.forward(50 * sqrt(2))
+    t.left(45)
+    t.penup()
+    t.forward(100)
+    t.pendown()
+    t.left(90)
+    t.forward(100)
+    t.right(90)
+    t.forward(100)
+    t.right(90)
+    t.forward(50)
+    t.right(90)
+    t.forward(100)
+    t.right(180)
+    t.forward(100)
+    t.right(90)
+    t.forward(50)
+    t.left(90)
+    t.penup()
+    t.forward(50)
+    t.left(90)
+    t.forward(100)
+    t.pendown()
+    t.right(90)
+    t.forward(100)
+    t.right(180)
+    t.forward(50)
+    t.left(90)
+    t.forward(100)
+    t.penup()
+    t.left(90)
+    t.forward(100)
+    t.pendown()
+    t.forward(100)
+    t.left(90)
+    t.forward(50)
+    t.left(90)
+    t.forward(100)
+    t.right(90)
+    t.forward(50)
+    t.right(90)
+    t.forward(100)
+    s.exitonclick()
+    turtle.done()
+    
+newFile = open("Final_Board.txt", "w")
+for i in range(19):
+    for j in range(19):
+        r = str(Grid[i, j])
+        newFile.write(r)
+    newFile.write("\n")
+print("GAME OVER... Thanks for playing :)")
+
